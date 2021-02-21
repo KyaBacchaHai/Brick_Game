@@ -8,7 +8,9 @@ import numpy as np
 ######################################
 ######## Import Local Scripts ########
 ######################################
-import board, ball, paddle, game_over
+import board, ball
+import paddle, game_over
+import bricks
 from gletch import _getChUnix as getChar
 from alarmexception import AlarmException
 
@@ -63,6 +65,10 @@ Balls[0].attached = True
 
 # exit(0)
 present_board = Fresh_Board
+Bricks = bricks.create_bricks(10)
+for i in Bricks:
+	present_board = i.display(present_board)
+
 while True:
 
 	while present_lives:
@@ -82,7 +88,9 @@ while True:
 		if(inp=='q'):
 			end_game()
 
-
+		next_block = present_board[Balls[0].x + Balls[0].v_x][Balls[0].y + Balls[0].v_y]
+		if( (next_block == "3") or (next_block == "2") or (next_block == "1")):
+			bricks.Brick_collision(Bricks, Balls[0].x, Balls[0].y, Balls[0].v_x, Balls[0].v_y )
 
 		if (Balls[0].attached == False):
 			present_board =  Balls[0].move(present_board, Paddle.x + Paddle.lenght//2, Paddle.v_x)
@@ -100,6 +108,7 @@ while True:
 
 		os.system("clear")
 		os.system("clear")
+		print("Lives: ", present_lives)
 		board.display_board(present_board)
 
 	
