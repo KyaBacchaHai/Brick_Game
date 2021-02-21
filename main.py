@@ -57,9 +57,10 @@ for i in range(COLS):
 Balls = []
 
 Paddle = paddle.Paddle(20, 1, 12)
-ball_spawn = Paddle.x + np.random.randint(Paddle.lenght)
+ball_spawn = Paddle.x + np.random.randint(Paddle.lenght) - 1 
 Balls.append(ball.Ball(ball_spawn, 22, 1,1))
 present_lives = MAX_LIVES
+present_points = 0
 
 Balls[0].attached = True
 
@@ -76,11 +77,11 @@ while True:
 		if( inp != None ):
 			time.sleep(t/2)
 		if (inp =='d'):
-			if (not(Paddle.x+Paddle.lenght >= 70)):
+			if (Paddle.x + Paddle.v_x + Paddle.lenght <= 70):
 				present_board = Paddle.move(1,present_board)
 				ball_spawn += Paddle.v_x
 		if (inp =='a'):
-			if not (Paddle.x <= 0):
+			if (Paddle.x - Paddle.v_x >= 0):
 				present_board = Paddle.move(-1,present_board)
 				ball_spawn -= Paddle.v_x
 		if (inp=='p'):
@@ -88,9 +89,24 @@ while True:
 		if(inp=='q'):
 			end_game()
 
-		next_block = present_board[Balls[0].x + Balls[0].v_x][Balls[0].y + Balls[0].v_y]
-		if( (next_block == "3") or (next_block == "2") or (next_block == "1")):
-			bricks.Brick_collision(Bricks, Balls[0].x, Balls[0].y, Balls[0].v_x, Balls[0].v_y )
+		if (Balls[0].attached == False):
+			try:
+				next_block = present_board[Balls[0].y + Balls[0].v_y][Balls[0].x + Balls[0].v_x]
+				if( (next_block == "3") or (next_block == "2") or (next_block == "1") or (next_block == "N") ):
+					Bricks = bricks.Brick_collision(Bricks, Balls[0].x, Balls[0].y, Balls[0].v_x, Balls[0].v_y )
+					Balls[0].v_x *= -1
+					Balls[0].v_y *= -1
+					present_points += 10
+					present_board = Fresh_Board
+					present_board = Paddle.move(1,present_board)
+					present_board = Paddle.move(-1,present_board)
+					for i in Bricks:
+						if (i.strength != 0):
+							present_board = i.display(present_board)
+
+
+			except:
+				pass
 
 		if (Balls[0].attached == False):
 			present_board =  Balls[0].move(present_board, Paddle.x + Paddle.lenght//2, Paddle.v_x)
@@ -109,6 +125,7 @@ while True:
 		os.system("clear")
 		os.system("clear")
 		print("Lives: ", present_lives)
+		print("Points: ", present_points)
 		board.display_board(present_board)
 
 	
