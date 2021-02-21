@@ -4,7 +4,7 @@ class Paddle:
 		super().__init__()
 		self.x = x
 		self.y = 23
-		self.v_x = 2
+		self.v_x = 1
 		self.lenght = lenght
 
 	def move(self, direction, board):
