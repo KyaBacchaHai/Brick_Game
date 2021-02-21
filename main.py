@@ -119,7 +119,7 @@ while True:
 					present_points += 10
 					Balls[0].v_x *= -1
 					Balls[0].v_y *= -1
-					if (np.random.randint(10) > 1):
+					if (np.random.randint(10) > 3):
 						PowerUps.append(PowerUp.PowerUp(Balls[0].x - Balls[0].v_x, Balls[0].y - Balls[0].v_y))
 				if (next_block == "E") :
 					Balls[0].v_x *= -1
