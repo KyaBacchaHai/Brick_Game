@@ -8,6 +8,10 @@ E: Exploding brick
 1/2/3: strength of brick at that position
 N: unbreakable brick
 
+## Instructions to run
+Enter the command:
+''' python3 main.py''
+
 ## Controls
 a: move paddle to left
 d: move paddle to right
