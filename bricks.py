@@ -13,7 +13,7 @@ class Brick:
 		if (self.strength==1 or self.strength==2 or self.strength==3):
 			board[self.y][self.x] = str(self.strength)
 		elif (self.strength==0) :
-			board[self.y][self.x] = "*"
+			board[self.y][self.x] = "."
 		elif (self.strength == 5):
 			board[self.y][self.x] = "E"
 		else:

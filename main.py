@@ -10,7 +10,7 @@ import numpy as np
 ######################################
 import board, ball
 import paddle, game_over
-import bricks
+import bricks, PowerUp
 from gletch import _getChUnix as getChar
 from alarmexception import AlarmException
 
@@ -20,7 +20,7 @@ from alarmexception import AlarmException
 ROWS = 70
 COLS = 25
 FPS = 5
-t = 0.1
+t = 0.2
 MAX_LIVES = 3
 TIME_INI = time.time()
 
@@ -50,7 +50,7 @@ Fresh_Board = []
 for i in range(COLS):
 	temp = []
 	for j in range(ROWS):
-		temp.append("*")
+		temp.append(".")
 	Fresh_Board.append(temp)
 
 
@@ -61,6 +61,7 @@ ball_spawn = Paddle.x + np.random.randint(Paddle.lenght)
 Balls.append(ball.Ball(ball_spawn, 22, 1,1))
 present_lives = MAX_LIVES
 present_points = 0
+PowerUps = []
 
 Balls[0].attached = True
 
@@ -78,7 +79,7 @@ while True:
 		if( inp != None ):
 			time.sleep(t/2)
 		if (inp =='d'):
-			if (Paddle.x + Paddle.v_x + Paddle.lenght <= 70):
+			if (Paddle.x + Paddle.v_x + Paddle.lenght <= 69):
 				present_board = Paddle.move(1,present_board)
 				ball_spawn += Paddle.v_x
 		if (inp =='a'):
@@ -90,6 +91,26 @@ while True:
 		if(inp=='q'):
 			end_game()
 
+		for i in PowerUps:
+			present_board, string =  i.display(present_board)
+			if string == "Over":
+				PowerUps.remove(i)
+			elif string == "X":
+				Paddle.lenght *= 2
+				if(Paddle.lenght>=69):
+					Paddle.lenght = 69
+				if (Paddle.x + Paddle.lenght > 70):
+					Paddle.x = 70 - Paddle.lenght - 1
+				present_board = Paddle.move(1,present_board)
+				present_board = Paddle.move(-1,present_board)
+				PowerUps.remove(i)
+			elif string == "S":
+				Paddle.lenght = Paddle.lenght//2
+				present_board = i.shrink_paddle(present_board)
+				present_board = Paddle.move(1,present_board)
+				present_board = Paddle.move(-1,present_board)
+				PowerUps.remove(i)
+
 		if (Balls[0].attached == False):
 			try:
 				next_block = present_board[Balls[0].y + Balls[0].v_y][Balls[0].x + Balls[0].v_x]
@@ -98,11 +119,13 @@ while True:
 					present_points += 10
 					Balls[0].v_x *= -1
 					Balls[0].v_y *= -1
+					if (np.random.randint(10) > 1):
+						PowerUps.append(PowerUp.PowerUp(Balls[0].x - Balls[0].v_x, Balls[0].y - Balls[0].v_y))
 				if (next_block == "E") :
 					Balls[0].v_x *= -1
 					Balls[0].v_y *= -1
 					Bricks = bricks.Explode(Bricks,Balls[0].x - Balls[0].v_x, Balls[0].y - Balls[0].v_y )
-					print("blast ho na")
+
 				present_board = Fresh_Board
 				present_board = Paddle.move(1,present_board)
 				present_board = Paddle.move(-1,present_board)
@@ -115,6 +138,7 @@ while True:
 			present_board =  Balls[0].move(present_board, Paddle.x + Paddle.lenght//2, Paddle.v_x)
 		else:
 			present_board = Balls[0].move_with_paddle(present_board, ball_spawn, Paddle.v_x)
+
 
 		if(present_board == "OVER"):
 			print("boom")

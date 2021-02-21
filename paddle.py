@@ -9,7 +9,7 @@ class Paddle:
 
 	def move(self, direction, board):
 		for i in range(self.lenght):
-			board[self.y][self.x + i] = "*"
+			board[self.y][self.x + i] = "."
 		self.x += direction*self.v_x
 		for i in range(self.lenght):
 			board[self.y][self.x + i] = "_"
