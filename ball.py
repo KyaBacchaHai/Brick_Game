@@ -1,3 +1,5 @@
+import time
+
 class Ball:
 
 	def __init__ (self, x, y, v_x, v_y):
@@ -28,6 +30,8 @@ class Ball:
 
 
 	def move(self, board, paddle_mid, paddle_vel):
+		print(self.y, self.x)
+		# time.sleep(0.3)
 		board[self.y][self.x] = "*"
 		if (self.update_position() != "OVER" ):
 			if (board[self.y][self.x] == "_" and self.attached==False):
@@ -49,7 +53,9 @@ class Ball:
 
 	def move_with_paddle(self, board, paddle_mid, paddle_vel):
 		self.y = 22
-		self.v_y *= -1
+		if (self.y > 0):
+			self.v_y *= -1
+		print(self.v_y)
 		board[self.y][self.x] = "*"
 		self.x = paddle_mid
 		board[self.y][self.x] = "0"

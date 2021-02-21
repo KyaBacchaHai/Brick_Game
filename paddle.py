@@ -11,10 +11,6 @@ class Paddle:
 		for i in range(self.lenght):
 			board[self.y][self.x + i] = "*"
 		self.x += direction*self.v_x
-		# if(self.x+ self.lenght >= 70):
-		# 	self.x -= direction*self.v_x
-		# elif (self.x  <= 0):
-		# 	self.x -= direction*self.v_x
 		for i in range(self.lenght):
 			board[self.y][self.x + i] = "_"
 		return board
