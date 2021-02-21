@@ -7,7 +7,7 @@ import numpy as np
 ######################################
 ######## Import Local Scripts ########
 ######################################
-import board, ball
+import board, ball, paddle
 
 ######################################
 ########## Global Variables ##########
@@ -28,6 +28,12 @@ Balls = []
 
 Balls.append(ball.Ball(12, 3, 1,1))
 
+Paddle = paddle.Paddle(20, 1, 8)
+Paddle.move(1,Fresh_Board)
+board.display_board(Fresh_Board)
+
+
+exit(0)
 while True:
 	present_board = Fresh_Board
 	time.sleep(1/FPS)
